@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Részletes Meteorológiai Adatok - Nyíregyháza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            /* Színek */
+            --accent-interactive-night: #00BFFF;
+            --text-primary-night: #EAEAEA;
+            --text-secondary-night: #A0B0C0;
+            --bg-widget-night: rgba(15, 23, 42, 0.88);
+            --border-widget-night: rgba(56, 189, 248, 0.2);
+            --bg-page-night-top: #0B1120;
+            --bg-page-night-bottom: #020617;
+            
+            /* Riasztási szintek */
+            --alert-severity-1-bg: rgba(253, 242, 233, 0.1);
+            --alert-severity-1-border: #F97316;
+            --alert-severity-2-bg: rgba(252, 165, 165, 0.1);
+            --alert-severity-2-border: #EF4444;
+            --alert-severity-3-bg: rgba(236, 72, 153, 0.1);
+            --alert-severity-3-border: #EC4899;
+            
+            /* Értékelési szintek színei */
+            --level-very-low: #3B82F6;  /* Kék */
+            --level-low: #22C55E;       /* Zöld */
+            --level-ideal: #10B981;     /* Türkiz zöld */
+            --level-moderate: #FBBF24;  /* Sárga */
+            --level-high: #F97316;      /* Narancs */
+            --level-very-high: #EF4444; /* Piros */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom, var(--bg-page-night-top), var(--bg-page-night-bottom));
+            color: var(--text-primary-night);
+            transition: background 1.5s ease;
+        }
+
+        .main-container {
+            max-width: 1200px; /* Növeltem a maximális szélességet a 4 oszlop miatt */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .page-header {
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary-night);
+            margin-top: 5px;
+        }
+        
+        .data-section {
+            background: var(--bg-widget-night);
+            border: 1px solid var(--border-widget-night);
+            border-radius: 16px;
+            padding: 20px 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .data-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 18px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--accent-interactive-night);
+        }
+        
+        .data-section h2 i {
+            font-size: 0.9em;
+        }
+
+        .no-data-message {
+            background-color: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary-night);
+            grid-column: 1 / -1;
+        }
+
+        #alerts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .alert-card {
+            border-left-width: 5px;
+            border-left-style: solid;
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .alert-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        .alert-card.severity-1 { background-color: var(--alert-severity-1-bg); border-color: var(--alert-severity-1-border); }
+        .alert-card.severity-2 { background-color: var(--alert-severity-2-bg); border-color: var(--alert-severity-2-border); }
+        .alert-card.severity-3 { background-color: var(--alert-severity-3-bg); border-color: var(--alert-severity-3-border); }
+        .alert-headline {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+        .alert-details {
+            font-size: 12px;
+            color: var(--text-secondary-night);
+            margin-bottom: 10px;
+        }
+        .alert-details strong {
+            color: var(--text-primary-night);
+            font-weight: 500;
+        }
+        .alert-description {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* === JAVÍTOTT GRID ELRENDEZÉS === */
+        .detailed-grid {
+            display: grid;
+            gap: 15px;
+            /* Mobil-első: 1 oszlop alapból */
+            grid-template-columns: 1fr;
+        }
+        
+        /* 2 oszlop tableten */
+        @media (min-width: 768px) {
+            .detailed-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 4 oszlop széles képernyőn */
+        @media (min-width: 1200px) {
+            .detailed-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        /* ================================ */
+
+        .grid-item {
+            background-color: rgba(0,0,0,0.15);
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .grid-item .label-container {
+             display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary-night);
+        }
+        .grid-item .label-container i {
+            width: 15px;
+            text-align: center;
+        }
+        .grid-item .value-container {
+            text-align: right;
+        }
+        .grid-item .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary-night);
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+        .grid-item .unit {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-secondary-night);
+        }
+        .grid-item .description {
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 2px;
+            font-style: italic;
+        }
+        
+        .level-very-low { color: var(--level-very-low); }
+        .level-low { color: var(--level-low); }
+        .level-ideal { color: var(--level-ideal); }
+        .level-moderate { color: var(--level-moderate); }
+        .level-high { color: var(--level-high); }
+        .level-very-high { color: var(--level-very-high); }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <header class="page-header">
+            <h1>Részletes Meteorológiai Adatok</h1>
+            <p class="subtitle">Speciális és mélyebb elemzés - Nyíregyháza</p>
+        </header>
+
+        <section class="data-section" id="alerts-section">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i>Időjárási Riasztások</h2>
+            <div id="alerts-container">
+                <p class="no-data-message">Riasztások lekérdezése...</p>
+            </div>
+        </section>
+
+        <section class="data-section" id="air-quality-section">
+            <h2><i class="fa-solid fa-wind"></i>Levegőminőség & Allergia Részletesen</h2>
+            <div class="detailed-grid" id="air-quality-grid">
+                 <div class="grid-item"><span class="label-container"><i class="fa-solid fa-smog"></i>Nitrogén-dioxid (NO₂)</span><div class="value-container"><span class="value"><span id="no2-value">--</span><span class="unit">µg/m³</span></span><small id="no2-desc" class="description"></small></div></div>
+                 <div class="grid-item"><span class="label-container"><i class="fa-solid fa-smog"></i>Kén-dioxid (SO₂)</span><div class="value-container"><span class="value"><span id="so2-value">--</span><span class="unit">µg/m³</span></span><small id="so2-desc" class="description"></small></div></div>
+                 <div class="grid-item"><span class="label-container"><i class="fa-solid fa-smog"></i>Szén-monoxid (CO)</span><div class="value-container"><span class="value"><span id="co-value">--</span><span class="unit">µg/m³</span></span><small id="co-desc" class="description"></small></div></div>
+                 <div class="grid-item"><span class="label-container"><i class="fa-solid fa-tree"></i>Nyírfa pollen</span><div class="value-container"><span class="value"><span id="birch-pollen-value">--</span><span class="unit">szemcse/m³</span></span><small id="birch-pollen-desc" class="description"></small></div></div>
+                 <div class="grid-item"><span class="label-container"><i class="fa-solid fa-tree"></i>Égerfa pollen</span><div class="value-container"><span class="value"><span id="alder-pollen-value">--</span><span class="unit">szemcse/m³</span></span><small id="alder-pollen-desc" class="description"></small></div></div>
+                 <div class="grid-item"><span class="label-container"><i class="fa-brands fa-envira"></i>Fekete üröm pollen</span><div class="value-container"><span class="value"><span id="mugwort-pollen-value">--</span><span class="unit">szemcse/m³</span></span><small id="mugwort-pollen-desc" class="description"></small></div></div>
+            </div>
+        </section>
+
+        <section class="data-section" id="gardening-section">
+            <h2><i class="fa-solid fa-seedling"></i>Kertészeti & Talaj Adatok</h2>
+            <div class="detailed-grid" id="gardening-grid">
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-temperature-half"></i>Talajhőm. (Felszín)</span><div class="value-container"><span class="value"><span id="soil-temp-0cm-value">--</span><span class="unit">°C</span></span><small id="soil-temp-0cm-desc" class="description"></small></div></div>
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-temperature-half"></i>Talajhőm. (6cm)</span><div class="value-container"><span class="value"><span id="soil-temp-6cm-value">--</span><span class="unit">°C</span></span><small id="soil-temp-6cm-desc" class="description"></small></div></div>
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-temperature-half"></i>Talajhőm. (18cm)</span><div class="value-container"><span class="value"><span id="soil-temp-18cm-value">--</span><span class="unit">°C</span></span><small id="soil-temp-18cm-desc" class="description"></small></div></div>
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-droplet"></i>Talajnedv. (0-1cm)</span><div class="value-container"><span class="value"><span id="soil-moisture-0-1cm-value">--</span><span class="unit">m³/m³</span></span><small id="soil-moisture-0-1cm-desc" class="description"></small></div></div>
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-droplet"></i>Talajnedv. (1-3cm)</span><div class="value-container"><span class="value"><span id="soil-moisture-1-3cm-value">--</span><span class="unit">m³/m³</span></span><small id="soil-moisture-1-3cm-desc" class="description"></small></div></div>
+                <div class="grid-item"><span class="label-container"><i class="fa-solid fa-sun"></i>Párolgás (Mai)</span><div class="value-container"><span class="value"><span id="evapotranspiration-value">--</span><span class="unit">mm</span></span><small id="evapotranspiration-desc" class="description"></small></div></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const weatherComApiKey = 'e1f10a1e78da46f5b10a1e78da96f525';
+        const NYIREGYHAZA_COORDS = { lat: 47.9550, lon: 21.7160 };
+
+        const REFRESH_ALERTS_INTERVAL = 5 * 60 * 1000;
+        const REFRESH_AIR_QUALITY_INTERVAL = 30 * 60 * 1000;
+        const REFRESH_GARDENING_INTERVAL = 2 * 60 * 60 * 1000;
+
+        const NO_DATA_STRING = '--';
+        
+        function formatValue(value, precision = 1) {
+            if (value === null || typeof value === 'undefined' || isNaN(value)) {
+                return NO_DATA_STRING;
+            }
+            return value.toFixed(precision);
+        }
+
+        function getAirPollutantLevel(value, type) {
+            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
+            const thresholds = {
+                NO2: [20, 40, 100, 200],
+                SO2: [20, 50, 125, 350],
+                CO: [2000, 4000, 7000, 10000]
+            };
+            const t = thresholds[type] || thresholds['NO2'];
+
+            if (value < t[0]) return { text: 'Nagyon alacsony', className: 'level-very-low' };
+            if (value < t[1]) return { text: 'Alacsony', className: 'level-low' };
+            if (value < t[2]) return { text: 'Mérsékelt', className: 'level-moderate' };
+            if (value < t[3]) return { text: 'Magas', className: 'level-high' };
+            return { text: 'Nagyon magas', className: 'level-very-high' };
+        }
+
+        function getPollenLevel(value) {
+            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
+            if (value < 1) return { text: 'Nincs', className: 'level-low' };
+            if (value < 15) return { text: 'Alacsony', className: 'level-low' };
+            if (value < 50) return { text: 'Mérsékelt', className: 'level-moderate' };
+            if (value < 100) return { text: 'Magas', className: 'level-high' };
+            return { text: 'Nagyon magas', className: 'level-very-high' };
+        }
+        
+        function getSoilTempLevel(value) {
+             if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
+             if (value < 5) return { text: 'Nagyon hideg', className: 'level-very-low' };
+             if (value < 12) return { text: 'Hűvös', className: 'level-low' };
+             if (value < 25) return { text: 'Ideális', className: 'level-ideal' };
+             return { text: 'Meleg', className: 'level-moderate' };
+        }
+
+        function getSoilMoistureLevel(value) {
+            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
+            if (value < 0.10) return { text: 'Kiszáradt', className: 'level-high' };
+            if (value < 0.20) return { text: 'Száraz', className: 'level-moderate' };
+            if (value < 0.35) return { text: 'Ideális', className: 'level-ideal' };
+            if (value < 0.45) return { text: 'Nedves', className: 'level-low' };
+            return { text: 'Túl nedves', className: 'level-very-low' };
+        }
+        
+        function getEvapotranspirationLevel(value) {
+            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
+            if (value < 1.5) return { text: 'Alacsony párolgás', className: 'level-low' };
+            if (value < 3.0) return { text: 'Mérsékelt párolgás', className: 'level-moderate' };
+            return { text: 'Magas párolgás', className: 'level-high' };
+        }
+
+        function updateElement(id, value, precision, evalFunc, type) {
+            const valueEl = document.getElementById(`${id}-value`);
+            const descEl = document.getElementById(`${id}-desc`);
+            if (!valueEl || !descEl) return;
+
+            valueEl.textContent = formatValue(value, precision);
+            
+            const level = evalFunc(value, type);
+            descEl.textContent = level.text;
+            descEl.className = `description ${level.className}`;
+        }
+
+        async function fetchAndRenderAlerts() {
+            const url = `https://api.weather.com/v3/alerts/headlines?geocode=${NYIREGYHAZA_COORDS.lat},${NYIREGYHAZA_COORDS.lon}&format=json&language=hu-HU&apiKey=${weatherComApiKey}`;
+            const container = document.getElementById('alerts-container');
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Weather.com Alerts API hiba: ${response.status}`);
+                const data = await response.json();
+
+                if (data.alerts && data.alerts.length > 0) {
+                    container.innerHTML = data.alerts.map(alert => {
+                        const severityClass = `severity-${alert.severity}`;
+                        const startTime = new Date(alert.effectiveTimeLocal).toLocaleString('hu-HU');
+                        const endTime = new Date(alert.expireTimeLocal).toLocaleString('hu-HU');
+
+                        return `
+                            <div class="alert-card ${severityClass}">
+                                <h3 class="alert-headline">${alert.headlineText}</h3>
+                                <p class="alert-details">
+                                    Súlyosság: <strong>${alert.severity}</strong> | Érvényes: <strong>${startTime} - ${endTime}</strong>
+                                </p>
+                                <p class="alert-description">${alert.eventDescription || 'Nincs részletes leírás.'}</p>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    container.innerHTML = '<p class="no-data-message">Jelenleg nincs érvényben lévő riasztás a térségben.</p>';
+                }
+            } catch (error) {
+                console.error("Hiba a riasztások lekérésekor:", error);
+                container.innerHTML = '<p class="no-data-message">A riasztási adatok lekérése sikertelen volt.</p>';
+            }
+        }
+        
+        async function fetchAndRenderAirQuality() {
+            const container = document.getElementById('air-quality-grid');
+            const hourlyParams = "carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,alder_pollen,birch_pollen,mugwort_pollen";
+            const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=${hourlyParams}&timezone=auto`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Open-Meteo Air Quality API hiba: ${response.status}`);
+                const data = await response.json();
+                
+                if (data && data.hourly && data.hourly.time && data.hourly.time.length > 0) {
+                    const now = new Date();
+                    let currentIndex = data.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
+                    if (currentIndex === -1) currentIndex = data.hourly.time.length - 1;
+                    
+                    const current = data.hourly;
+                    updateElement('no2', current.nitrogen_dioxide[currentIndex], 2, getAirPollutantLevel, 'NO2');
+                    updateElement('so2', current.sulphur_dioxide[currentIndex], 2, getAirPollutantLevel, 'SO2');
+                    updateElement('co', current.carbon_monoxide[currentIndex], 0, getAirPollutantLevel, 'CO');
+                    updateElement('birch-pollen', current.birch_pollen[currentIndex], 1, getPollenLevel);
+                    updateElement('alder-pollen', current.alder_pollen[currentIndex], 1, getPollenLevel);
+                    updateElement('mugwort-pollen', current.mugwort_pollen[currentIndex], 1, getPollenLevel);
+                } else {
+                    throw new Error("Hiányos adatstruktúra az Air Quality API válaszában.");
+                }
+
+            } catch (error) {
+                console.error("Hiba a levegőminőségi adatok lekérésekor:", error);
+                container.innerHTML = `<p class="no-data-message">A levegőminőségi adatok jelenleg nem elérhetők.</p>`;
+            }
+        }
+
+        async function fetchAndRenderGardeningData() {
+            const container = document.getElementById('gardening-grid');
+            const hourlyParams = "soil_temperature_0cm,soil_temperature_6cm,soil_temperature_18cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm";
+            const dailyParams = "et0_fao_evapotranspiration";
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=${hourlyParams}&daily=${dailyParams}&timezone=auto`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Open-Meteo Forecast API hiba: ${response.status}`);
+                const data = await response.json();
+
+                if (data && data.hourly && data.daily) {
+                    const now = new Date();
+                    let currentIndex = data.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
+                    if (currentIndex === -1) currentIndex = data.hourly.time.length - 1;
+                    const hourly = data.hourly;
+                    
+                    updateElement('soil-temp-0cm', hourly.soil_temperature_0cm[currentIndex], 1, getSoilTempLevel);
+                    updateElement('soil-temp-6cm', hourly.soil_temperature_6cm[currentIndex], 1, getSoilTempLevel);
+                    updateElement('soil-temp-18cm', hourly.soil_temperature_18cm[currentIndex], 1, getSoilTempLevel);
+                    updateElement('soil-moisture-0-1cm', hourly.soil_moisture_0_to_1cm[currentIndex], 3, getSoilMoistureLevel);
+                    updateElement('soil-moisture-1-3cm', hourly.soil_moisture_1_to_3cm[currentIndex], 3, getSoilMoistureLevel);
+                    updateElement('evapotranspiration', data.daily.et0_fao_evapotranspiration[0], 2, getEvapotranspirationLevel);
+                } else {
+                    throw new Error("Hiányos adatstruktúra a Forecast API válaszában.");
+                }
+
+            } catch (error) {
+                console.error("Hiba a kertészeti adatok lekérésekor:", error);
+                container.innerHTML = `<p class="no-data-message">A kertészeti adatok jelenleg nem elérhetők.</p>`;
+            }
+        }
+
+        function initApp() {
+            fetchAndRenderAlerts();
+            fetchAndRenderAirQuality();
+            fetchAndRenderGardeningData();
+
+            setInterval(fetchAndRenderAlerts, REFRESH_ALERTS_INTERVAL);
+            setInterval(fetchAndRenderAirQuality, REFRESH_AIR_QUALITY_INTERVAL);
+            setInterval(fetchAndRenderGardeningData, REFRESH_GARDENING_INTERVAL);
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+
+</body>
+</html>
