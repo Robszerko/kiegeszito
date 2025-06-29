@@ -17,21 +17,19 @@
             --bg-page-night-top: #0B1120;
             --bg-page-night-bottom: #020617;
             
-            /* Riasztási szintek */
-            --alert-severity-1-bg: rgba(253, 242, 233, 0.1);
-            --alert-severity-1-border: #F97316;
-            --alert-severity-2-bg: rgba(252, 165, 165, 0.1);
-            --alert-severity-2-border: #EF4444;
-            --alert-severity-3-bg: rgba(236, 72, 153, 0.1);
-            --alert-severity-3-border: #EC4899;
+            /* Riasztási szintek színei */
+            --alert-severity-1-color: #FBBF24;
+            --alert-severity-2-color: #F97316;
+            --alert-severity-3-color: #EF4444;
+            --alert-severity-4-color: #e11d48; 
             
             /* Értékelési szintek színei */
-            --level-very-low: #3B82F6;  /* Kék */
-            --level-low: #22C55E;       /* Zöld */
-            --level-ideal: #10B981;     /* Türkiz zöld */
-            --level-moderate: #FBBF24;  /* Sárga */
-            --level-high: #F97316;      /* Narancs */
-            --level-very-high: #EF4444; /* Piros */
+            --level-very-low: #3B82F6;
+            --level-low: #22C55E;
+            --level-ideal: #10B981;
+            --level-moderate: #FBBF24;
+            --level-high: #F97316;
+            --level-very-high: #EF4444;
         }
 
         body {
@@ -40,11 +38,10 @@
             padding: 20px;
             background: linear-gradient(to bottom, var(--bg-page-night-top), var(--bg-page-night-bottom));
             color: var(--text-primary-night);
-            transition: background 1.5s ease;
         }
 
         .main-container {
-            max-width: 1400px; /* Növeltem a maximális szélességet */
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -53,21 +50,20 @@
 
         .page-header {
             text-align: center;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
         }
-
         .page-header h1 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 600;
             margin: 0;
-            letter-spacing: -0.5px;
         }
-
         .page-header .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary-night);
-            margin-top: 5px;
+            margin-top: 4px;
+            opacity: 0.8;
         }
         
         .data-section {
@@ -106,49 +102,77 @@
         #alerts-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
         .alert-card {
-            border-left-width: 5px;
+            background-color: rgba(30, 41, 59, 0.7);
+            border-left-width: 4px;
             border-left-style: solid;
-            padding: 15px;
+            padding: 12px 18px;
             border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .alert-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        .alert-card.severity-1 { border-color: var(--alert-severity-1-color); }
+        .alert-card.severity-2 { border-color: var(--alert-severity-2-color); }
+        .alert-card.severity-3 { border-color: var(--alert-severity-3-color); }
+        .alert-card.severity-4 { border-color: var(--alert-severity-4-color); }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        .alert-card.severity-1 { background-color: var(--alert-severity-1-bg); border-color: var(--alert-severity-1-border); }
-        .alert-card.severity-2 { background-color: var(--alert-severity-2-bg); border-color: var(--alert-severity-2-border); }
-        .alert-card.severity-3 { background-color: var(--alert-severity-3-bg); border-color: var(--alert-severity-3-border); }
-        .alert-headline {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-        }
-        .alert-details {
-            font-size: 12px;
-            color: var(--text-secondary-night);
-            margin-bottom: 10px;
-        }
-        .alert-details strong {
-            color: var(--text-primary-night);
+        .alert-icon { font-size: 22px; }
+        .severity-1 .alert-icon { color: var(--alert-severity-1-color); }
+        .severity-2 .alert-icon { color: var(--alert-severity-2-color); }
+        .severity-3 .alert-icon { color: var(--alert-severity-3-color); }
+        .severity-4 .alert-icon { color: var(--alert-severity-4-color); }
+
+        .alert-main-text {
+            font-size: 15px;
             font-weight: 500;
+            margin: 0;
+            line-height: 1.6;
         }
-        .alert-description {
+        .alert-main-text.severity-1 { color: var(--alert-severity-1-color); }
+        .alert-main-text.severity-2 { color: var(--alert-severity-2-color); }
+        .alert-main-text.severity-3 { color: var(--alert-severity-3-color); }
+        .alert-main-text.severity-4 { color: var(--alert-severity-4-color); }
+        
+        .alert-toggle {
+            background: none;
+            border: none;
+            color: var(--accent-interactive-night);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 0;
+            margin-top: 8px;
+            margin-left: 37px;
+        }
+        .alert-toggle:hover { text-decoration: underline; }
+
+        .alert-full-description {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-out, margin-top 0.4s ease-out;
             font-size: 14px;
             line-height: 1.6;
+            color: var(--text-secondary-night);
+            margin-left: 37px;
+        }
+        .alert-full-description.is-visible {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 10px;
         }
         
         .detailed-grid {
             display: grid;
             gap: 12px;
-            /* Dinamikus oszlopszám: a böngésző annyit tesz egy sorba, amennyi elfér */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
         
-        /* Új, kompakt kártya dizájn */
         .grid-item {
             background-color: rgba(0,0,0,0.15);
             padding: 10px 12px;
@@ -195,7 +219,6 @@
         .grid-item .description:before { content: '('; }
         .grid-item .description:after { content: ')'; }
         
-        /* Színek a minősítésekhez */
         .level-very-low { color: var(--level-very-low); }
         .level-low { color: var(--level-low); }
         .level-ideal { color: var(--level-ideal); }
@@ -208,22 +231,21 @@
 
     <div class="main-container">
         <header class="page-header">
-            <h1>Részletes Meteorológiai Adatok</h1>
-            <p class="subtitle">Speciális és mélyebb elemzés - Nyíregyháza</p>
+            <h1>Részletes Adatok</h1>
+            <p class="subtitle">Speciális meteorológiai és környezeti információk - Nyíregyháza</p>
         </header>
 
         <section class="data-section" id="alerts-section">
-            <h2><i class="fa-solid fa-triangle-exclamation"></i>Időjárási Riasztások</h2>
+            <h2><i class="fa-solid fa-triangle-exclamation"></i>Aktuális Figyelmeztetések</h2>
             <div id="alerts-container">
                 <p class="no-data-message">Riasztások lekérdezése...</p>
             </div>
         </section>
 
-        <!-- ÖSSZEVONT SZEKCIÓ -->
         <section class="data-section" id="detailed-data-section">
-            <h2><i class="fa-solid fa-magnifying-glass-chart"></i>Részletes Levegőminőségi és Talajadatok</h2>
+            <h2><i class="fa-solid fa-magnifying-glass-chart"></i>Levegőminőség és Talajadatok</h2>
             <div class="detailed-grid" id="detailed-grid-container">
-                <!-- A kártyák ide kerülnek be a JS segítségével -->
+                 <p class="no-data-message">Adatok lekérdezése...</p>
             </div>
         </section>
 
@@ -234,27 +256,21 @@
         const NYIREGYHAZA_COORDS = { lat: 47.9550, lon: 21.7160 };
 
         const REFRESH_ALERTS_INTERVAL = 5 * 60 * 1000;
-        const REFRESH_AIR_QUALITY_INTERVAL = 30 * 60 * 1000;
-        const REFRESH_GARDENING_INTERVAL = 2 * 60 * 60 * 1000;
+        const REFRESH_DETAILED_DATA_INTERVAL = 30 * 60 * 1000;
 
         const NO_DATA_STRING = '--';
         
         function formatValue(value, precision = 1) {
-            if (value === null || typeof value === 'undefined' || isNaN(value)) {
-                return NO_DATA_STRING;
-            }
+            if (value === null || typeof value === 'undefined' || isNaN(value)) return NO_DATA_STRING;
             return value.toFixed(precision);
         }
 
+        // --- Értékelő és segédfunkciók ---
+
         function getAirPollutantLevel(value, type) {
             if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-            const thresholds = {
-                NO2: [20, 40, 100, 200],
-                SO2: [20, 50, 125, 350],
-                CO: [2000, 4000, 7000, 10000]
-            };
+            const thresholds = { NO2: [20, 40, 100, 200], SO2: [20, 50, 125, 350], CO: [2000, 4000, 7000, 10000] };
             const t = thresholds[type] || thresholds['NO2'];
-
             if (value < t[0]) return { text: 'Nagyon alacsony', className: 'level-very-low' };
             if (value < t[1]) return { text: 'Alacsony', className: 'level-low' };
             if (value < t[2]) return { text: 'Mérsékelt', className: 'level-moderate' };
@@ -295,7 +311,95 @@
             return { text: 'Magas párolgás', className: 'level-high' };
         }
 
-        function createGridItem(id, iconClass, label, unit, value, precision, evalFunc, type) {
+        function getAlertSeverityInfo(severity) {
+            switch (severity) {
+                case 1: return { text: 'Elsőfokú', colorClass: 'severity-1' };
+                case 2: return { text: 'Mérsékelt', colorClass: 'severity-2' };
+                case 3: return { text: 'Magas szintű', colorClass: 'severity-3' };
+                case 4: return { text: 'Különösen veszélyes', colorClass: 'severity-4' };
+                default: return { text: null, colorClass: '' };
+            }
+        }
+
+        function mapEventToIcon(eventText) {
+            if (!eventText) return 'fa-solid fa-circle-info';
+            const text = eventText.toLowerCase();
+            if (text.includes('zivatar')) return 'fa-solid fa-cloud-bolt';
+            if (text.includes('hőség') || text.includes('hőhullám')) return 'fa-solid fa-temperature-full';
+            if (text.includes('hideg')) return 'fa-solid fa-temperature-empty';
+            if (text.includes('szél')) return 'fa-solid fa-wind';
+            if (text.includes('eső') || text.includes('zápor')) return 'fa-solid fa-cloud-showers-heavy';
+            if (text.includes('havazás') || text.includes('hófúvás')) return 'fa-solid fa-snowflake';
+            if (text.includes('köd')) return 'fa-solid fa-smog';
+            return 'fa-solid fa-circle-info';
+        }
+        
+        const napok = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+        function padZero(num) { return num.toString().padStart(2, '0'); }
+
+        function formatFullHungarianDate(isoString) {
+            if (!isoString) return 'ismeretlen időpont';
+            const date = new Date(isoString);
+            return `${date.getFullYear()}.${padZero(date.getMonth() + 1)}.${padZero(date.getDate())}. ${napok[date.getDay()]} ${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
+        }
+
+        async function fetchAndRenderAlerts() {
+            const url = `https://api.weather.com/v3/alerts/headlines?geocode=${NYIREGYHAZA_COORDS.lat},${NYIREGYHAZA_COORDS.lon}&format=json&language=hu-HU&apiKey=${weatherComApiKey}`;
+            const container = document.getElementById('alerts-container');
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Weather.com Alerts API hiba: ${response.status}`);
+                const data = await response.json();
+
+                if (data.alerts && data.alerts.length > 0) {
+                    container.innerHTML = data.alerts.map((alert, index) => {
+                        const severityInfo = getAlertSeverityInfo(alert.severity);
+                        const iconClass = mapEventToIcon(alert.eventDescription);
+                        const eventType = alert.eventDescription || 'esemény';
+                        const startTime = formatFullHungarianDate(alert.effectiveTimeLocal);
+                        const endTime = formatFullHungarianDate(alert.expireTimeLocal);
+                        
+                        let mainAlertText = severityInfo.text 
+                            ? `${severityInfo.text} figyelmeztetés ${eventType.toLowerCase()} miatt! Érvényes: ${startTime} és ${endTime} között.`
+                            : `${eventType}! Érvényes: ${startTime} és ${endTime} között.`;
+
+                        const alertId = `alert-desc-${index}`;
+
+                        return `
+                            <div class="alert-card ${severityInfo.colorClass}">
+                                <div class="alert-header">
+                                    <i class="alert-icon ${iconClass}"></i>
+                                    <p class="alert-main-text ${severityInfo.colorClass}">${mainAlertText}</p>
+                                </div>
+                                <div id="${alertId}" class="alert-full-description">
+                                    ${alert.headlineText || 'Nincs további részlet.'}
+                                </div>
+                                <button class="alert-toggle" data-target="${alertId}">Részletes hivatalos közlemény</button>
+                            </div>
+                        `;
+                    }).join('');
+
+                    document.querySelectorAll('.alert-toggle').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const targetId = button.getAttribute('data-target');
+                            const descriptionEl = document.getElementById(targetId);
+                            const isVisible = descriptionEl.classList.toggle('is-visible');
+                            button.textContent = isVisible ? 'Bezárás' : 'Részletes hivatalos közlemény';
+                        });
+                    });
+
+                } else {
+                    container.innerHTML = '<p class="no-data-message">Jelenleg nincs érvényben lévő, aktív figyelmeztetés.</p>';
+                }
+            } catch (error) {
+                console.error("Hiba a riasztások lekérésekor:", error);
+                container.innerHTML = '<p class="no-data-message">A riasztási adatok lekérése sikertelen volt.</p>';
+            }
+        }
+        
+        function createGridItem(iconClass, label, unit, value, precision, evalFunc, type) {
             const level = evalFunc(value, type);
             return `
                 <div class="grid-item">
@@ -310,128 +414,67 @@
                 </div>
             `;
         }
-
-        async function fetchAndRenderAlerts() {
-            const url = `https://api.weather.com/v3/alerts/headlines?geocode=${NYIREGYHAZA_COORDS.lat},${NYIREGYHAZA_COORDS.lon}&format=json&language=hu-HU&apiKey=${weatherComApiKey}`;
-            const container = document.getElementById('alerts-container');
-            
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Weather.com Alerts API hiba: ${response.status}`);
-                const data = await response.json();
-
-                if (data.alerts && data.alerts.length > 0) {
-                    container.innerHTML = data.alerts.map(alert => {
-                        const severityClass = `severity-${alert.severity}`;
-                        const startTime = new Date(alert.effectiveTimeLocal).toLocaleString('hu-HU');
-                        const endTime = new Date(alert.expireTimeLocal).toLocaleString('hu-HU');
-
-                        return `
-                            <div class="alert-card ${severityClass}">
-                                <h3 class="alert-headline">${alert.headlineText}</h3>
-                                <p class="alert-details">
-                                    Súlyosság: <strong>${alert.severity}</strong> | Érvényes: <strong>${startTime} - ${endTime}</strong>
-                                </p>
-                                <p class="alert-description">${alert.eventDescription || 'Nincs részletes leírás.'}</p>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    container.innerHTML = '<p class="no-data-message">Jelenleg nincs érvényben lévő riasztás a térségben.</p>';
-                }
-            } catch (error) {
-                console.error("Hiba a riasztások lekérésekor:", error);
-                container.innerHTML = '<p class="no-data-message">A riasztási adatok lekérése sikertelen volt.</p>';
-            }
-        }
         
-        async function fetchAndRenderAirQuality() {
+        // --- JAVÍTOTT, SZINKRONIZÁLT ADATLEKÉRÉS ---
+        async function fetchAndRenderDetailedData() {
             const container = document.getElementById('detailed-grid-container');
-            const hourlyParams = "carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,alder_pollen,birch_pollen,mugwort_pollen";
-            const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=${hourlyParams}&timezone=auto`;
+            container.innerHTML = ''; 
 
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Open-Meteo Air Quality API hiba: ${response.status}`);
-                const data = await response.json();
-                
-                if (data && data.hourly && data.hourly.time && data.hourly.time.length > 0) {
-                    const now = new Date();
-                    let currentIndex = data.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
-                    if (currentIndex === -1) currentIndex = data.hourly.time.length - 1;
-                    
-                    const current = data.hourly;
-                    let content = '';
-                    content += createGridItem('no2', 'fa-solid fa-smog', 'Nitrogén-dioxid (NO₂)', 'µg/m³', current.nitrogen_dioxide[currentIndex], 2, getAirPollutantLevel, 'NO2');
-                    content += createGridItem('so2', 'fa-solid fa-smog', 'Kén-dioxid (SO₂)', 'µg/m³', current.sulphur_dioxide[currentIndex], 2, getAirPollutantLevel, 'SO2');
-                    content += createGridItem('co', 'fa-solid fa-smog', 'Szén-monoxid (CO)', 'µg/m³', current.carbon_monoxide[currentIndex], 0, getAirPollutantLevel, 'CO');
-                    content += createGridItem('birch-pollen', 'fa-solid fa-tree', 'Nyírfa pollen', 'szemcse/m³', current.birch_pollen[currentIndex], 1, getPollenLevel);
-                    content += createGridItem('alder-pollen', 'fa-solid fa-tree', 'Égerfa pollen', 'szemcse/m³', current.alder_pollen[currentIndex], 1, getPollenLevel);
-                    content += createGridItem('mugwort-pollen', 'fa-brands fa-envira', 'Fekete üröm pollen', 'szemcse/m³', current.mugwort_pollen[currentIndex], 1, getPollenLevel);
-                    
-                    container.innerHTML += content;
-                } else {
-                    throw new Error("Hiányos adatstruktúra az Air Quality API válaszában.");
-                }
+            const airQualityUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,alder_pollen,birch_pollen,mugwort_pollen&timezone=auto`;
+            const gardeningUrl = `https://api.open-meteo.com/v1/forecast?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=soil_temperature_0cm,soil_temperature_6cm,soil_temperature_18cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm&daily=et0_fao_evapotranspiration&timezone=auto`;
+            
+            const [airResult, gardeningResult] = await Promise.allSettled([
+                fetch(airQualityUrl).then(res => res.json()),
+                fetch(gardeningUrl).then(res => res.json())
+            ]);
 
-            } catch (error) {
-                console.error("Hiba a levegőminőségi adatok lekérésekor:", error);
-                container.innerHTML += `<p class="no-data-message">A levegőminőségi adatok jelenleg nem elérhetők.</p>`;
+            let finalHtml = '';
+
+            if (airResult.status === 'fulfilled' && airResult.value.hourly) {
+                const airData = airResult.value;
+                const now = new Date();
+                let currentIndex = airData.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
+                if (currentIndex === -1) currentIndex = airData.hourly.time.length - 1;
+                const current = airData.hourly;
+                finalHtml += createGridItem('fa-solid fa-smog', 'Nitrogén-dioxid (NO₂)', 'µg/m³', current.nitrogen_dioxide[currentIndex], 2, getAirPollutantLevel, 'NO2');
+                finalHtml += createGridItem('fa-solid fa-smog', 'Kén-dioxid (SO₂)', 'µg/m³', current.sulphur_dioxide[currentIndex], 2, getAirPollutantLevel, 'SO2');
+                finalHtml += createGridItem('fa-solid fa-smog', 'Szén-monoxid (CO)', 'µg/m³', current.carbon_monoxide[currentIndex], 0, getAirPollutantLevel, 'CO');
+                finalHtml += createGridItem('fa-solid fa-tree', 'Nyírfa pollen', 'szemcse/m³', current.birch_pollen[currentIndex], 1, getPollenLevel);
+                finalHtml += createGridItem('fa-solid fa-tree', 'Égerfa pollen', 'szemcse/m³', current.alder_pollen[currentIndex], 1, getPollenLevel);
+                finalHtml += createGridItem('fa-brands fa-envira', 'Fekete üröm pollen', 'szemcse/m³', current.mugwort_pollen[currentIndex], 1, getPollenLevel);
+            } else {
+                console.error("Hiba a levegőminőségi adatok lekérésekor:", airResult.reason);
             }
-        }
 
-        async function fetchAndRenderGardeningData() {
-            const container = document.getElementById('detailed-grid-container');
-            const hourlyParams = "soil_temperature_0cm,soil_temperature_6cm,soil_temperature_18cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm";
-            const dailyParams = "et0_fao_evapotranspiration";
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=${hourlyParams}&daily=${dailyParams}&timezone=auto`;
+            if (gardeningResult.status === 'fulfilled' && gardeningResult.value.hourly) {
+                const gardeningData = gardeningResult.value;
+                const now = new Date();
+                let currentIndex = gardeningData.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
+                if (currentIndex === -1) currentIndex = gardeningData.hourly.time.length - 1;
+                const hourly = gardeningData.hourly;
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (Felszín)', '°C', hourly.soil_temperature_0cm[currentIndex], 1, getSoilTempLevel);
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (6cm)', '°C', hourly.soil_temperature_6cm[currentIndex], 1, getSoilTempLevel);
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (18cm)', '°C', hourly.soil_temperature_18cm[currentIndex], 1, getSoilTempLevel);
+                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (0-1cm)', 'm³/m³', hourly.soil_moisture_0_to_1cm[currentIndex], 3, getSoilMoistureLevel);
+                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (1-3cm)', 'm³/m³', hourly.soil_moisture_1_to_3cm[currentIndex], 3, getSoilMoistureLevel);
+                finalHtml += createGridItem('fa-solid fa-sun', 'Párolgás (Mai)', 'mm', gardeningData.daily.et0_fao_evapotranspiration[0], 2, getEvapotranspirationLevel);
+            } else {
+                 console.error("Hiba a kertészeti adatok lekérésekor:", gardeningResult.reason);
+            }
 
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Open-Meteo Forecast API hiba: ${response.status}`);
-                const data = await response.json();
-
-                if (data && data.hourly && data.daily) {
-                    const now = new Date();
-                    let currentIndex = data.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
-                    if (currentIndex === -1) currentIndex = data.hourly.time.length - 1;
-                    const hourly = data.hourly;
-                    
-                    let content = '';
-                    content += createGridItem('soil-temp-0cm', 'fa-solid fa-temperature-half', 'Talajhőm. (Felszín)', '°C', hourly.soil_temperature_0cm[currentIndex], 1, getSoilTempLevel);
-                    content += createGridItem('soil-temp-6cm', 'fa-solid fa-temperature-half', 'Talajhőm. (6cm)', '°C', hourly.soil_temperature_6cm[currentIndex], 1, getSoilTempLevel);
-                    content += createGridItem('soil-temp-18cm', 'fa-solid fa-temperature-half', 'Talajhőm. (18cm)', '°C', hourly.soil_temperature_18cm[currentIndex], 1, getSoilTempLevel);
-                    content += createGridItem('soil-moisture-0-1cm', 'fa-solid fa-droplet', 'Talajnedv. (0-1cm)', 'm³/m³', hourly.soil_moisture_0_to_1cm[currentIndex], 3, getSoilMoistureLevel);
-                    content += createGridItem('soil-moisture-1-3cm', 'fa-solid fa-droplet', 'Talajnedv. (1-3cm)', 'm³/m³', hourly.soil_moisture_1_to_3cm[currentIndex], 3, getSoilMoistureLevel);
-                    content += createGridItem('evapotranspiration', 'fa-solid fa-sun', 'Párolgás (Mai)', 'mm', data.daily.et0_fao_evapotranspiration[0], 2, getEvapotranspirationLevel);
-                    
-                    container.innerHTML += content;
-                } else {
-                    throw new Error("Hiányos adatstruktúra a Forecast API válaszában.");
-                }
-
-            } catch (error) {
-                console.error("Hiba a kertészeti adatok lekérésekor:", error);
-                container.innerHTML += `<p class="no-data-message">A kertészeti adatok jelenleg nem elérhetők.</p>`;
+            if(finalHtml) {
+                container.innerHTML = finalHtml;
+            } else {
+                container.innerHTML = '<p class="no-data-message">A részletes adatok lekérése sikertelen volt.</p>';
             }
         }
 
         function initApp() {
-            // Töröljük a konténer tartalmát a frissítés előtt
-            document.getElementById('detailed-grid-container').innerHTML = '';
-
             fetchAndRenderAlerts();
-            fetchAndRenderAirQuality();
-            fetchAndRenderGardeningData();
+            fetchAndRenderDetailedData();
 
             setInterval(fetchAndRenderAlerts, REFRESH_ALERTS_INTERVAL);
-            
-            // Az összevont panelek frissítése
-            setInterval(() => {
-                document.getElementById('detailed-grid-container').innerHTML = '';
-                fetchAndRenderAirQuality();
-                fetchAndRenderGardeningData();
-            }, REFRESH_AIR_QUALITY_INTERVAL);
+            setInterval(fetchAndRenderDetailedData, REFRESH_DETAILED_DATA_INTERVAL);
         }
 
         document.addEventListener('DOMContentLoaded', initApp);
