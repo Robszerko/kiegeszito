@@ -8,388 +8,124 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            /* Színek */
-            --accent-interactive-night: #00BFFF;
-            --text-primary-night: #EAEAEA;
-            --text-secondary-night: #A0B0C0;
-            --bg-widget-night: rgba(15, 23, 42, 0.88);
-            --border-widget-night: rgba(56, 189, 248, 0.2);
-            --bg-page-night-top: #0B1120;
-            --bg-page-night-bottom: #020617;
-            
-            /* Riasztási szintek színei */
-            --alert-severity-1-color: #FBBF24;
-            --alert-severity-2-color: #F97316;
-            --alert-severity-3-color: #EF4444;
-            --alert-severity-4-color: #e11d48; 
-            
-            /* Értékelési szintek színei */
-            --level-very-low: #3B82F6;
-            --level-low: #22C55E;
-            --level-ideal: #10B981;
-            --level-moderate: #FBBF24;
-            --level-high: #F97316;
-            --level-very-high: #EF4444;
+            --accent-interactive-night: #00BFFF; --text-primary-night: #EAEAEA; --text-secondary-night: #A0B0C0;
+            --bg-widget-night: rgba(15, 23, 42, 0.88); --border-widget-night: rgba(56, 189, 248, 0.2);
+            --bg-page-night-top: #0B1120; --bg-page-night-bottom: #020617;
+            --alert-severity-1: #FBBF24; --alert-severity-2: #F97316; --alert-severity-3: #EF4444; --alert-severity-4: #e11d48;
+            --level-very-low: #3B82F6; --level-low: #22C55E; --level-ideal: #10B981;
+            --level-moderate: #FBBF24; --level-high: #F97316; --level-very-high: #EF4444;
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(to bottom, var(--bg-page-night-top), var(--bg-page-night-bottom));
-            color: var(--text-primary-night);
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .page-header {
-            text-align: center;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .page-header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 0;
-        }
-        .page-header .subtitle {
-            font-size: 13px;
-            color: var(--text-secondary-night);
-            margin-top: 4px;
-            opacity: 0.8;
-        }
-        
-        .data-section {
-            background: var(--bg-widget-night);
-            border: 1px solid var(--border-widget-night);
-            border-radius: 16px;
-            padding: 20px 25px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .data-section h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 0 0 18px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--accent-interactive-night);
-        }
-        
-        .data-section h2 i {
-            font-size: 0.9em;
-        }
-
-        .no-data-message {
-            background-color: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-style: italic;
-            color: var(--text-secondary-night);
-            grid-column: 1 / -1;
-        }
-
-        #alerts-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .alert-card {
-            background-color: rgba(30, 41, 59, 0.7);
-            border-left-width: 4px;
-            border-left-style: solid;
-            padding: 12px 18px;
-            border-radius: 8px;
-        }
-        .alert-card.severity-1 { border-color: var(--alert-severity-1-color); }
-        .alert-card.severity-2 { border-color: var(--alert-severity-2-color); }
-        .alert-card.severity-3 { border-color: var(--alert-severity-3-color); }
-        .alert-card.severity-4 { border-color: var(--alert-severity-4-color); }
-
-        .alert-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 20px; background: linear-gradient(to bottom, var(--bg-page-night-top), var(--bg-page-night-bottom)); color: var(--text-primary-night); }
+        .main-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 25px; }
+        .page-header { text-align: center; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .page-header h1 { font-size: 24px; font-weight: 600; margin: 0; }
+        .page-header .subtitle { font-size: 13px; color: var(--text-secondary-night); margin-top: 4px; opacity: 0.8; }
+        .data-section { background: var(--bg-widget-night); border: 1px solid var(--border-widget-night); border-radius: 16px; padding: 20px 25px; backdrop-filter: blur(15px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .data-section h2 { font-size: 20px; font-weight: 600; margin: 0 0 18px 0; display: flex; align-items: center; gap: 12px; color: var(--accent-interactive-night); }
+        .data-section h2 i { font-size: 0.9em; }
+        .no-data-message { background-color: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; text-align: center; font-style: italic; color: var(--text-secondary-night); grid-column: 1 / -1; }
+        #alerts-container { display: flex; flex-direction: column; gap: 12px; }
+        .alert-card { background-color: rgba(30, 41, 59, 0.7); border-left: 4px solid var(--alert-color); padding: 12px 18px; border-radius: 8px; color: var(--alert-color); }
+        .alert-card.severity-1 { --alert-color: var(--alert-severity-1); }
+        .alert-card.severity-2 { --alert-color: var(--alert-severity-2); }
+        .alert-card.severity-3 { --alert-color: var(--alert-severity-3); }
+        .alert-card.severity-4 { --alert-color: var(--alert-severity-4); }
+        .alert-header { display: flex; align-items: center; gap: 15px; }
         .alert-icon { font-size: 22px; }
-        .severity-1 .alert-icon { color: var(--alert-severity-1-color); }
-        .severity-2 .alert-icon { color: var(--alert-severity-2-color); }
-        .severity-3 .alert-icon { color: var(--alert-severity-3-color); }
-        .severity-4 .alert-icon { color: var(--alert-severity-4-color); }
-
-        .alert-main-text {
-            font-size: 15px;
-            font-weight: 500;
-            margin: 0;
-            line-height: 1.6;
-        }
-        .alert-main-text.severity-1 { color: var(--alert-severity-1-color); }
-        .alert-main-text.severity-2 { color: var(--alert-severity-2-color); }
-        .alert-main-text.severity-3 { color: var(--alert-severity-3-color); }
-        .alert-main-text.severity-4 { color: var(--alert-severity-4-color); }
-        
-        .alert-toggle {
-            background: none;
-            border: none;
-            color: var(--accent-interactive-night);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 0;
-            margin-top: 8px;
-            margin-left: 37px;
-        }
+        .alert-main-text { font-size: 15px; font-weight: 500; margin: 0; line-height: 1.6; }
+        .alert-toggle { background: none; border: none; color: var(--accent-interactive-night); cursor: pointer; font-size: 13px; font-weight: 600; padding: 0; margin-top: 8px; margin-left: 37px; }
         .alert-toggle:hover { text-decoration: underline; }
-
-        .alert-full-description {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.4s ease-out, opacity 0.3s ease-out, margin-top 0.4s ease-out;
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-secondary-night);
-            margin-left: 37px;
-        }
-        .alert-full-description.is-visible {
-            max-height: 500px;
-            opacity: 1;
-            margin-top: 10px;
-        }
-        
-        .detailed-grid {
-            display: grid;
-            gap: 12px;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }
-        
-        .grid-item {
-            background-color: rgba(0,0,0,0.15);
-            padding: 10px 12px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-        .grid-item .label-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary-night);
-            white-space: nowrap;
-        }
-        .grid-item .label-container i {
-            width: 15px;
-            text-align: center;
-            opacity: 0.8;
-        }
-        .grid-item .value-container {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            font-weight: 600;
-        }
-        .grid-item .value {
-            font-size: 15px;
-            color: var(--text-primary-night);
-        }
-        .grid-item .unit {
-            font-size: 11px;
-            color: var(--text-secondary-night);
-        }
-        .grid-item .description {
-            font-size: 11px;
-            font-style: italic;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-        .grid-item .description:before { content: '('; }
-        .grid-item .description:after { content: ')'; }
-        
-        .level-very-low { color: var(--level-very-low); }
-        .level-low { color: var(--level-low); }
-        .level-ideal { color: var(--level-ideal); }
-        .level-moderate { color: var(--level-moderate); }
-        .level-high { color: var(--level-high); }
-        .level-very-high { color: var(--level-very-high); }
+        .alert-full-description { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.4s ease; font-size: 14px; line-height: 1.6; color: var(--text-secondary-night); margin-left: 37px; }
+        .alert-full-description.is-visible { max-height: 500px; opacity: 1; margin-top: 10px; }
+        .detailed-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-item { background-color: rgba(0,0,0,0.15); padding: 10px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .grid-item .label-container { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary-night); white-space: nowrap; }
+        .grid-item .label-container i { width: 15px; text-align: center; opacity: 0.8; }
+        .grid-item .value-container { display: flex; align-items: baseline; gap: 6px; font-weight: 600; }
+        .grid-item .value { font-size: 15px; color: var(--text-primary-night); }
+        .grid-item .unit { font-size: 11px; color: var(--text-secondary-night); }
+        .grid-item .description { font-size: 11px; font-style: italic; font-weight: 500; white-space: nowrap; }
+        .grid-item .description:before { content: '('; } .grid-item .description:after { content: ')'; }
+        .level-very-low { color: var(--level-very-low); } .level-low { color: var(--level-low); } .level-ideal { color: var(--level-ideal); }
+        .level-moderate { color: var(--level-moderate); } .level-high { color: var(--level-high); } .level-very-high { color: var(--level-very-high); }
     </style>
 </head>
 <body>
-
     <div class="main-container">
         <header class="page-header">
             <h1>Részletes Adatok</h1>
             <p class="subtitle">Speciális meteorológiai és környezeti információk - Nyíregyháza</p>
         </header>
-
         <section class="data-section" id="alerts-section">
             <h2><i class="fa-solid fa-triangle-exclamation"></i>Aktuális Figyelmeztetések</h2>
-            <div id="alerts-container">
-                <p class="no-data-message">Riasztások lekérdezése...</p>
-            </div>
+            <div id="alerts-container"><p class="no-data-message">Riasztások lekérdezése...</p></div>
         </section>
-
         <section class="data-section" id="detailed-data-section">
             <h2><i class="fa-solid fa-magnifying-glass-chart"></i>Levegőminőség és Talajadatok</h2>
-            <div class="detailed-grid" id="detailed-grid-container">
-                 <p class="no-data-message">Adatok lekérdezése...</p>
-            </div>
+            <div class="detailed-grid" id="detailed-grid-container"><p class="no-data-message">Adatok lekérdezése...</p></div>
         </section>
-
     </div>
-
     <script>
-        const weatherComApiKey = 'e1f10a1e78da46f5b10a1e78da96f525';
-        const NYIREGYHAZA_COORDS = { lat: 47.9550, lon: 21.7160 };
+        const weatherComApiKey = 'e1f10a1e78da46f5b10a1e78da96f525',
+              NYIREGYHAZA_COORDS = { lat: 47.9550, lon: 21.7160 },
+              REFRESH_ALERTS_INTERVAL = 5 * 60 * 1000,
+              REFRESH_DETAILED_DATA_INTERVAL = 30 * 60 * 1000,
+              NO_DATA_STRING = '--',
+              napok = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
 
-        const REFRESH_ALERTS_INTERVAL = 5 * 60 * 1000;
-        const REFRESH_DETAILED_DATA_INTERVAL = 30 * 60 * 1000;
-
-        const NO_DATA_STRING = '--';
+        const formatValue = (value, precision = 1) => (value === null || typeof value === 'undefined' || isNaN(value)) ? NO_DATA_STRING : value.toFixed(precision);
+        const padZero = (num) => num.toString().padStart(2, '0');
         
-        function formatValue(value, precision = 1) {
-            if (value === null || typeof value === 'undefined' || isNaN(value)) return NO_DATA_STRING;
-            return value.toFixed(precision);
-        }
-
-        // --- Értékelő és segédfunkciók ---
-
-        function getAirPollutantLevel(value, type) {
+        const RATING_CONFIG = {
+            NO2:        [[20, 'Nagyon alacsony', 'level-very-low'], [40, 'Alacsony', 'level-low'], [100, 'Mérsékelt', 'level-moderate'], [200, 'Magas', 'level-high'], [Infinity, 'Nagyon magas', 'level-very-high']],
+            SO2:        [[20, 'Nagyon alacsony', 'level-very-low'], [50, 'Alacsony', 'level-low'], [125, 'Mérsékelt', 'level-moderate'], [350, 'Magas', 'level-high'], [Infinity, 'Nagyon magas', 'level-very-high']],
+            CO:         [[2000, 'Nagyon alacsony', 'level-very-low'], [4000, 'Alacsony', 'level-low'], [7000, 'Mérsékelt', 'level-moderate'], [10000, 'Magas', 'level-high'], [Infinity, 'Nagyon magas', 'level-very-high']],
+            pollen:     [[1, 'Nincs', 'level-low'], [15, 'Alacsony', 'level-low'], [50, 'Mérsékelt', 'level-moderate'], [100, 'Magas', 'level-high'], [Infinity, 'Nagyon magas', 'level-very-high']],
+            soilTemp:   [[5, 'Nagyon hideg', 'level-very-low'], [12, 'Hűvös', 'level-low'], [25, 'Ideális', 'level-ideal'], [Infinity, 'Meleg', 'level-moderate']],
+            soilMoist:  [[0.10, 'Kiszáradt', 'level-high'], [0.20, 'Száraz', 'level-moderate'], [0.35, 'Ideális', 'level-ideal'], [0.45, 'Nedves', 'level-low'], [Infinity, 'Túl nedves', 'level-very-low']],
+            evapo:      [[1.5, 'Alacsony párolgás', 'level-low'], [3.0, 'Mérsékelt párolgás', 'level-moderate'], [Infinity, 'Magas párolgás', 'level-high']],
+        };
+        const getRatedLevel = (value, type) => {
             if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-            const thresholds = { NO2: [20, 40, 100, 200], SO2: [20, 50, 125, 350], CO: [2000, 4000, 7000, 10000] };
-            const t = thresholds[type] || thresholds['NO2'];
-            if (value < t[0]) return { text: 'Nagyon alacsony', className: 'level-very-low' };
-            if (value < t[1]) return { text: 'Alacsony', className: 'level-low' };
-            if (value < t[2]) return { text: 'Mérsékelt', className: 'level-moderate' };
-            if (value < t[3]) return { text: 'Magas', className: 'level-high' };
-            return { text: 'Nagyon magas', className: 'level-very-high' };
-        }
+            const [ , text, className] = RATING_CONFIG[type].find(([threshold]) => value < threshold);
+            return { text, className };
+        };
 
-        function getPollenLevel(value) {
-            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-            if (value < 1) return { text: 'Nincs', className: 'level-low' };
-            if (value < 15) return { text: 'Alacsony', className: 'level-low' };
-            if (value < 50) return { text: 'Mérsékelt', className: 'level-moderate' };
-            if (value < 100) return { text: 'Magas', className: 'level-high' };
-            return { text: 'Nagyon magas', className: 'level-very-high' };
-        }
-        
-        function getSoilTempLevel(value) {
-             if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-             if (value < 5) return { text: 'Nagyon hideg', className: 'level-very-low' };
-             if (value < 12) return { text: 'Hűvös', className: 'level-low' };
-             if (value < 25) return { text: 'Ideális', className: 'level-ideal' };
-             return { text: 'Meleg', className: 'level-moderate' };
-        }
-
-        function getSoilMoistureLevel(value) {
-            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-            if (value < 0.10) return { text: 'Kiszáradt', className: 'level-high' };
-            if (value < 0.20) return { text: 'Száraz', className: 'level-moderate' };
-            if (value < 0.35) return { text: 'Ideális', className: 'level-ideal' };
-            if (value < 0.45) return { text: 'Nedves', className: 'level-low' };
-            return { text: 'Túl nedves', className: 'level-very-low' };
-        }
-        
-        function getEvapotranspirationLevel(value) {
-            if (value === null || typeof value === 'undefined' || isNaN(value)) return { text: '', className: '' };
-            if (value < 1.5) return { text: 'Alacsony párolgás', className: 'level-low' };
-            if (value < 3.0) return { text: 'Mérsékelt párolgás', className: 'level-moderate' };
-            return { text: 'Magas párolgás', className: 'level-high' };
-        }
-
-        function getAlertSeverityInfo(severity) {
-            switch (severity) {
-                case 1: return { text: 'Elsőfokú', colorClass: 'severity-1' };
-                case 2: return { text: 'Mérsékelt', colorClass: 'severity-2' };
-                case 3: return { text: 'Magas szintű', colorClass: 'severity-3' };
-                case 4: return { text: 'Különösen veszélyes', colorClass: 'severity-4' };
-                default: return { text: null, colorClass: '' };
-            }
-        }
-
-        function mapEventToIcon(eventText) {
-            if (!eventText) return 'fa-solid fa-circle-info';
-            const text = eventText.toLowerCase();
-            if (text.includes('zivatar')) return 'fa-solid fa-cloud-bolt';
-            if (text.includes('hőség') || text.includes('hőhullám')) return 'fa-solid fa-temperature-full';
-            if (text.includes('hideg')) return 'fa-solid fa-temperature-empty';
-            if (text.includes('szél')) return 'fa-solid fa-wind';
-            if (text.includes('eső') || text.includes('zápor')) return 'fa-solid fa-cloud-showers-heavy';
-            if (text.includes('havazás') || text.includes('hófúvás')) return 'fa-solid fa-snowflake';
-            if (text.includes('köd')) return 'fa-solid fa-smog';
-            return 'fa-solid fa-circle-info';
-        }
-        
-        const napok = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
-        function padZero(num) { return num.toString().padStart(2, '0'); }
-
-        function formatFullHungarianDate(isoString) {
+        const ALERT_SEVERITY_INFO = { 1: 'Elsőfokú', 2: 'Mérsékelt', 3: 'Magas szintű', 4: 'Különösen veszélyes' };
+        const EVENT_ICON_MAP = [
+            ['zivatar', 'fa-solid fa-cloud-bolt'], ['hőség', 'fa-solid fa-temperature-full'], ['hőhullám', 'fa-solid fa-temperature-full'],
+            ['hideg', 'fa-solid fa-temperature-empty'], ['szél', 'fa-solid fa-wind'], ['eső', 'fa-solid fa-cloud-showers-heavy'],
+            ['zápor', 'fa-solid fa-cloud-showers-heavy'], ['havazás', 'fa-solid fa-snowflake'], ['hófúvás', 'fa-solid fa-snowflake'], ['köd', 'fa-solid fa-smog']
+        ];
+        const mapEventToIcon = (eventText) => (EVENT_ICON_MAP.find(([keyword]) => eventText?.toLowerCase().includes(keyword))?.[1] || 'fa-solid fa-circle-info');
+        const formatFullHungarianDate = (isoString) => {
             if (!isoString) return 'ismeretlen időpont';
-            const date = new Date(isoString);
-            return `${date.getFullYear()}.${padZero(date.getMonth() + 1)}.${padZero(date.getDate())}. ${napok[date.getDay()]} ${padZero(date.getHours())}:${padZero(date.getMinutes())}`;
-        }
-
+            const d = new Date(isoString);
+            return `${d.getFullYear()}.${padZero(d.getMonth() + 1)}.${padZero(d.getDate())}. ${napok[d.getDay()]} ${padZero(d.getHours())}:${padZero(d.getMinutes())}`;
+        };
+        
         async function fetchAndRenderAlerts() {
-            const url = `https://api.weather.com/v3/alerts/headlines?geocode=${NYIREGYHAZA_COORDS.lat},${NYIREGYHAZA_COORDS.lon}&format=json&language=hu-HU&apiKey=${weatherComApiKey}`;
             const container = document.getElementById('alerts-container');
-            
+            const url = `https://api.weather.com/v3/alerts/headlines?geocode=${NYIREGYHAZA_COORDS.lat},${NYIREGYHAZA_COORDS.lon}&format=json&language=hu-HU&apiKey=${weatherComApiKey}`;
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error(`Weather.com Alerts API hiba: ${response.status}`);
+                if (!response.ok) throw new Error(`API hiba: ${response.status}`);
                 const data = await response.json();
-
                 if (data.alerts && data.alerts.length > 0) {
                     container.innerHTML = data.alerts.map((alert, index) => {
-                        const severityInfo = getAlertSeverityInfo(alert.severity);
-                        const iconClass = mapEventToIcon(alert.eventDescription);
+                        const severityText = ALERT_SEVERITY_INFO[alert.severity] || '';
                         const eventType = alert.eventDescription || 'esemény';
-                        const startTime = formatFullHungarianDate(alert.effectiveTimeLocal);
-                        const endTime = formatFullHungarianDate(alert.expireTimeLocal);
-                        
-                        let mainAlertText = severityInfo.text 
-                            ? `${severityInfo.text} figyelmeztetés ${eventType.toLowerCase()} miatt! Érvényes: ${startTime} és ${endTime} között.`
-                            : `${eventType}! Érvényes: ${startTime} és ${endTime} között.`;
-
-                        const alertId = `alert-desc-${index}`;
-
+                        const mainAlertText = `${severityText} figyelmeztetés ${eventType.toLowerCase()} miatt! Érvényes: ${formatFullHungarianDate(alert.effectiveTimeLocal)} és ${formatFullHungarianDate(alert.expireTimeLocal)} között.`;
                         return `
-                            <div class="alert-card ${severityInfo.colorClass}">
+                            <div class="alert-card severity-${alert.severity}">
                                 <div class="alert-header">
-                                    <i class="alert-icon ${iconClass}"></i>
-                                    <p class="alert-main-text ${severityInfo.colorClass}">${mainAlertText}</p>
+                                    <i class="alert-icon ${mapEventToIcon(alert.eventDescription)}"></i>
+                                    <p class="alert-main-text">${mainAlertText}</p>
                                 </div>
-                                <div id="${alertId}" class="alert-full-description">
-                                    ${alert.headlineText || 'Nincs további részlet.'}
-                                </div>
-                                <button class="alert-toggle" data-target="${alertId}">Részletes hivatalos közlemény</button>
-                            </div>
-                        `;
+                                <div id="alert-desc-${index}" class="alert-full-description">${alert.headlineText || 'Nincs további részlet.'}</div>
+                                <button class="alert-toggle" data-target="alert-desc-${index}">Részletes hivatalos közlemény</button>
+                            </div>`;
                     }).join('');
-
-                    document.querySelectorAll('.alert-toggle').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const targetId = button.getAttribute('data-target');
-                            const descriptionEl = document.getElementById(targetId);
-                            const isVisible = descriptionEl.classList.toggle('is-visible');
-                            button.textContent = isVisible ? 'Bezárás' : 'Részletes hivatalos közlemény';
-                        });
-                    });
-
                 } else {
                     container.innerHTML = '<p class="no-data-message">Jelenleg nincs érvényben lévő, aktív figyelmeztetés.</p>';
                 }
@@ -399,86 +135,74 @@
             }
         }
         
-        function createGridItem(iconClass, label, unit, value, precision, evalFunc, type) {
-            const level = evalFunc(value, type);
+        const createGridItem = (iconClass, label, unit, value, precision, evalType) => {
+            const level = getRatedLevel(value, evalType);
             return `
                 <div class="grid-item">
-                    <span class="label-container">
-                        <i class="${iconClass}"></i>${label}
-                    </span>
+                    <span class="label-container"><i class="${iconClass}"></i>${label}</span>
                     <div class="value-container">
                         <span class="value">${formatValue(value, precision)}</span>
                         <span class="unit">${unit}</span>
                         <small class="description ${level.className}">${level.text}</small>
                     </div>
-                </div>
-            `;
-        }
-        
-        // --- JAVÍTOTT, SZINKRONIZÁLT ADATLEKÉRÉS ---
+                </div>`;
+        };
+
         async function fetchAndRenderDetailedData() {
             const container = document.getElementById('detailed-grid-container');
-            container.innerHTML = ''; 
-
             const airQualityUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,alder_pollen,birch_pollen,mugwort_pollen&timezone=auto`;
             const gardeningUrl = `https://api.open-meteo.com/v1/forecast?latitude=${NYIREGYHAZA_COORDS.lat}&longitude=${NYIREGYHAZA_COORDS.lon}&hourly=soil_temperature_0cm,soil_temperature_6cm,soil_temperature_18cm,soil_moisture_0_to_1cm,soil_moisture_1_to_3cm&daily=et0_fao_evapotranspiration&timezone=auto`;
             
-            const [airResult, gardeningResult] = await Promise.allSettled([
-                fetch(airQualityUrl).then(res => res.json()),
-                fetch(gardeningUrl).then(res => res.json())
-            ]);
-
+            const [airResult, gardeningResult] = await Promise.allSettled([ fetch(airQualityUrl).then(res => res.json()), fetch(gardeningUrl).then(res => res.json()) ]);
             let finalHtml = '';
 
+            const now = new Date();
+            const findCurrentIndex = (times) => {
+                const idx = times.findIndex(timeStr => new Date(timeStr) >= now);
+                return idx === -1 ? times.length - 1 : idx;
+            };
+
             if (airResult.status === 'fulfilled' && airResult.value.hourly) {
-                const airData = airResult.value;
-                const now = new Date();
-                let currentIndex = airData.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
-                if (currentIndex === -1) currentIndex = airData.hourly.time.length - 1;
-                const current = airData.hourly;
-                finalHtml += createGridItem('fa-solid fa-smog', 'Nitrogén-dioxid (NO₂)', 'µg/m³', current.nitrogen_dioxide[currentIndex], 2, getAirPollutantLevel, 'NO2');
-                finalHtml += createGridItem('fa-solid fa-smog', 'Kén-dioxid (SO₂)', 'µg/m³', current.sulphur_dioxide[currentIndex], 2, getAirPollutantLevel, 'SO2');
-                finalHtml += createGridItem('fa-solid fa-smog', 'Szén-monoxid (CO)', 'µg/m³', current.carbon_monoxide[currentIndex], 0, getAirPollutantLevel, 'CO');
-                finalHtml += createGridItem('fa-solid fa-tree', 'Nyírfa pollen', 'szemcse/m³', current.birch_pollen[currentIndex], 1, getPollenLevel);
-                finalHtml += createGridItem('fa-solid fa-tree', 'Égerfa pollen', 'szemcse/m³', current.alder_pollen[currentIndex], 1, getPollenLevel);
-                finalHtml += createGridItem('fa-brands fa-envira', 'Fekete üröm pollen', 'szemcse/m³', current.mugwort_pollen[currentIndex], 1, getPollenLevel);
-            } else {
-                console.error("Hiba a levegőminőségi adatok lekérésekor:", airResult.reason);
-            }
+                const { hourly } = airResult.value;
+                const i = findCurrentIndex(hourly.time);
+                finalHtml += createGridItem('fa-solid fa-smog', 'Nitrogén-dioxid (NO₂)', 'µg/m³', hourly.nitrogen_dioxide?.[i], 2, 'NO2');
+                finalHtml += createGridItem('fa-solid fa-smog', 'Kén-dioxid (SO₂)', 'µg/m³', hourly.sulphur_dioxide?.[i], 2, 'SO2');
+                finalHtml += createGridItem('fa-solid fa-smog', 'Szén-monoxid (CO)', 'µg/m³', hourly.carbon_monoxide?.[i], 0, 'CO');
+                finalHtml += createGridItem('fa-solid fa-tree', 'Nyírfa pollen', 'szemcse/m³', hourly.birch_pollen?.[i], 1, 'pollen');
+                finalHtml += createGridItem('fa-solid fa-tree', 'Égerfa pollen', 'szemcse/m³', hourly.alder_pollen?.[i], 1, 'pollen');
+                finalHtml += createGridItem('fa-brands fa-envira', 'Fekete üröm pollen', 'szemcse/m³', hourly.mugwort_pollen?.[i], 1, 'pollen');
+            } else { console.error("Levegőminőség API hiba:", airResult.reason); }
 
             if (gardeningResult.status === 'fulfilled' && gardeningResult.value.hourly) {
-                const gardeningData = gardeningResult.value;
-                const now = new Date();
-                let currentIndex = gardeningData.hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
-                if (currentIndex === -1) currentIndex = gardeningData.hourly.time.length - 1;
-                const hourly = gardeningData.hourly;
-                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (Felszín)', '°C', hourly.soil_temperature_0cm[currentIndex], 1, getSoilTempLevel);
-                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (6cm)', '°C', hourly.soil_temperature_6cm[currentIndex], 1, getSoilTempLevel);
-                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (18cm)', '°C', hourly.soil_temperature_18cm[currentIndex], 1, getSoilTempLevel);
-                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (0-1cm)', 'm³/m³', hourly.soil_moisture_0_to_1cm[currentIndex], 3, getSoilMoistureLevel);
-                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (1-3cm)', 'm³/m³', hourly.soil_moisture_1_to_3cm[currentIndex], 3, getSoilMoistureLevel);
-                finalHtml += createGridItem('fa-solid fa-sun', 'Párolgás (Mai)', 'mm', gardeningData.daily.et0_fao_evapotranspiration[0], 2, getEvapotranspirationLevel);
-            } else {
-                 console.error("Hiba a kertészeti adatok lekérésekor:", gardeningResult.reason);
-            }
+                const { hourly, daily } = gardeningResult.value;
+                const i = findCurrentIndex(hourly.time);
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (Felszín)', '°C', hourly.soil_temperature_0cm?.[i], 1, 'soilTemp');
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (6cm)', '°C', hourly.soil_temperature_6cm?.[i], 1, 'soilTemp');
+                finalHtml += createGridItem('fa-solid fa-temperature-half', 'Talajhőm. (18cm)', '°C', hourly.soil_temperature_18cm?.[i], 1, 'soilTemp');
+                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (0-1cm)', 'm³/m³', hourly.soil_moisture_0_to_1cm?.[i], 3, 'soilMoist');
+                finalHtml += createGridItem('fa-solid fa-droplet', 'Talajnedv. (1-3cm)', 'm³/m³', hourly.soil_moisture_1_to_3cm?.[i], 3, 'soilMoist');
+                finalHtml += createGridItem('fa-solid fa-sun', 'Párolgás (Mai)', 'mm', daily.et0_fao_evapotranspiration?.[0], 2, 'evapo');
+            } else { console.error("Kertészeti API hiba:", gardeningResult.reason); }
 
-            if(finalHtml) {
-                container.innerHTML = finalHtml;
-            } else {
-                container.innerHTML = '<p class="no-data-message">A részletes adatok lekérése sikertelen volt.</p>';
-            }
+            container.innerHTML = finalHtml || '<p class="no-data-message">A részletes adatok lekérése sikertelen volt.</p>';
         }
 
         function initApp() {
             fetchAndRenderAlerts();
             fetchAndRenderDetailedData();
-
             setInterval(fetchAndRenderAlerts, REFRESH_ALERTS_INTERVAL);
             setInterval(fetchAndRenderDetailedData, REFRESH_DETAILED_DATA_INTERVAL);
-        }
 
+            document.getElementById('alerts-container').addEventListener('click', (e) => {
+                if (e.target.matches('.alert-toggle')) {
+                    const targetId = e.target.dataset.target;
+                    const descriptionEl = document.getElementById(targetId);
+                    const isVisible = descriptionEl.classList.toggle('is-visible');
+                    e.target.textContent = isVisible ? 'Bezárás' : 'Részletes hivatalos közlemény';
+                }
+            });
+        }
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
-
 </body>
 </html>
